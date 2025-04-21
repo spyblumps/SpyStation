@@ -45,6 +45,7 @@
         - EnergyCautery
         - Drill
         - SawElectric
+        - BoneSetter
   - type: ItemMapper
     mapLayers:
       hemostat:
@@ -71,6 +72,10 @@
         whitelist:
           tags:
           - AdvancedRetractor
+      boneSetter:
+        whitelist:
+          tags:
+          - BoneSetter
       cautery:
         whitelist:
           tags:
@@ -103,3 +108,4 @@
       - id: Cautery
       - id: Drill
       - id: SawElectric
+      - id: BoneSetter
