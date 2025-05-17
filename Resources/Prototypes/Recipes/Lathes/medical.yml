@@ -21,13 +21,6 @@
 
 - type: latheRecipe
   parent: BaseSurgicalRecipe
-  id: BoneSetter
-  result: BoneSetter
-  materials:
-    Steel: 100
-
-- type: latheRecipe
-  parent: BaseSurgicalRecipe
   id: Cautery
   result: Cautery
 

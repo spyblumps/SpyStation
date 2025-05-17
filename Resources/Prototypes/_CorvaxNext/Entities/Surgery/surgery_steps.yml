@@ -139,13 +139,13 @@
   components:
   - type: SurgeryStep
     tool:
-    - type: Bonesetter
+    - type: Retractor
     remove:
     - type: RibcageOpen
     duration: 2
   - type: Sprite
-    sprite: Objects/Specific/Medical/Surgery/bonesetter.rsi
-    state: predator_bonesetter
+    sprite: _CorvaxNext/Objects/Specific/Medical/Surgery/retractor.rsi
+    state: retractor
 
 - type: entity
   parent: SurgeryStepBase

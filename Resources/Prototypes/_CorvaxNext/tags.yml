@@ -15,9 +15,6 @@
   id: Retractor
 
 - type: Tag
-  id: BoneSetter
-
-- type: Tag
   id: AdvancedRetractor
 
 - type: Tag

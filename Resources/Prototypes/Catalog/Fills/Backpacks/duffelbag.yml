@@ -13,7 +13,6 @@
       - id: Retractor
       - id: Scalpel
       - id: BoneGel # _CorvaxNext: surgery
-      - id: Bonesetter
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateMedicalBundle
@@ -32,7 +31,6 @@
       - id: ClothingHandsGlovesNitrile
       - id: EmergencyRollerBedSpawnFolded
       - id: BoneGel # _CorvaxNext: surgery
-      - id: Bonesetter
 
 - type: entity
   parent: ClothingBackpackDuffelSyndicateBundle
