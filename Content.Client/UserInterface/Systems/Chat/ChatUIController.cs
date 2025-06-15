@@ -68,9 +68,6 @@ public sealed partial class ChatUIController : UIController
     [UISystemDependency] private readonly TransformSystem? _transform = default;
     [UISystemDependency] private readonly MindSystem? _mindSystem = default!;
     [UISystemDependency] private readonly RoleCodewordSystem? _roleCodewordSystem = default!;
-    // Corvax-Highlights-Start
-    [UISystemDependency] private readonly CharacterInfoSystem _characterInfo = default!;
-    // Corvax-Highlights-End
 
     [ValidatePrototypeId<ColorPalettePrototype>]
     private const string ChatNamePalette = "ChatNames";
@@ -157,25 +154,6 @@ public sealed partial class ChatUIController : UIController
     /// </summary>
     private readonly Dictionary<ChatChannel, int> _unreadMessages = new();
 
-    // Corvax-Highlights-Start
-    /// <summary>
-    ///     A list of words to be highlighted in the chatbox.
-    /// </summary>
-    private List<string> _highlights = [];
-
-    /// <summary>
-    ///     The color (hex) in witch the words will be highlighted as.
-    /// </summary>
-    private string? _highlightsColor;
-
-    private bool _autoFillHighlightsEnabled;
-
-    /// <summary>
-    ///     A bool to keep track if the 'CharacterUpdated' event is a new player attaching or the opening of the character info panel.
-    /// </summary>
-    private bool _charInfoIsAttach = false;
-    // Corvax-Highlights-End
-
     // TODO add a cap for this for non-replays
     public readonly List<(GameTick Tick, ChatMessage Msg)> History = new();
 
@@ -199,10 +177,6 @@ public sealed partial class ChatUIController : UIController
     public event Action<ChatSelectChannel>? SelectableChannelsChanged;
     public event Action<ChatChannel, int?>? UnreadMessageCountsUpdated;
     public event Action<ChatMessage>? MessageAdded;
-    // Corvax-Highlights-Start
-    public event Action<string>? HighlightsUpdated;
-    // Corvax-Highlights-End
-
     public override void Initialize()
     {
         _sawmill = Logger.GetSawmill("chat");
@@ -292,70 +266,6 @@ public sealed partial class ChatUIController : UIController
     {
         SetMainChat(false);
     }
-
-    // Corvax-Highlights-Start
-    public void OnSystemLoaded(CharacterInfoSystem system)
-    {
-        system.OnCharacterUpdate += CharacterUpdated;
-    }
-
-    public void OnSystemUnloaded(CharacterInfoSystem system)
-    {
-        system.OnCharacterUpdate -= CharacterUpdated;
-    }
-
-    private void CharacterUpdated(CharacterData data)
-    {
-        // If the _charInfoIsAttach is false then the character panel created the event, dismiss.
-        if (!_charInfoIsAttach)
-            return;
-
-        var (_, job, _, _, entityName) = data;
-
-        // If the character has a normal name (eg. "Name Surname" and not "Name Initial Surname" or a particular species name)
-        // subdivide it so that the name and surname individually get highlighted.
-        if (entityName.Count(c => c == ' ') == 1)
-            entityName = entityName.Replace(' ', '\n');
-
-        string newHighlights = entityName;
-
-        // Convert the job title to kebab-case and use it as a key for the loc file.
-        string jobKey = job.Replace(' ', '-').ToLower();
-
-        if (Loc.TryGetString($"highlights-{jobKey}", out var jobMatches))
-            newHighlights += '\n' + jobMatches.Replace(", ", "\n");
-
-        UpdateHighlights(newHighlights);
-        HighlightsUpdated?.Invoke(newHighlights);
-        _charInfoIsAttach = false;
-    }
-
-    public void UpdateHighlights(string highlights)
-    {
-        // Save the newly provided list of highlighs if different.
-        if (!_config.GetCVar(CCCVars.ChatHighlights).Equals(highlights, StringComparison.CurrentCultureIgnoreCase))
-        {
-            _config.SetCVar(CCCVars.ChatHighlights, highlights);
-            _config.SaveToFile();
-        }
-
-        // If the word is surrounded by "" we replace them with a whole-word regex tag.
-        highlights = highlights.Replace("\"", "\\b");
-
-        // Fill the array with the highlights separated by newlines, disregarding empty entries.
-        string[] arrHighlights = highlights.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-        _highlights.Clear();
-        foreach (var keyword in arrHighlights)
-        {
-            _highlights.Add(keyword);
-        }
-
-        // Arrange the list in descending order so that when highlighting,
-        // the full word (eg. "Security") appears before the abbreviation (eg. "Sec").
-        _highlights.Sort((x, y) => y.Length.CompareTo(x.Length));
-    }
-    // Corvax-Highlights-End
-
     private void OnChatWindowOpacityChanged(float opacity)
     {
         SetChatWindowOpacity(opacity);

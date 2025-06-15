@@ -1227,7 +1227,7 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
-      blackboard:
+    blackboard:
       NavClimb: !type:Bool
         true
       NavInteract: !type:Bool
