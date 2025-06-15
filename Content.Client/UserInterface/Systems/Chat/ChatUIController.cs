@@ -42,16 +42,10 @@ using Robust.Shared.Replays;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
-// Corvax-Highlights-Start
-using Content.Client.CharacterInfo;
-using static Content.Client.CharacterInfo.CharacterInfoSystem;
-using Content.Shared.Corvax.CCCVars;
-// Corvax-Highlights-End
 
 namespace Content.Client.UserInterface.Systems.Chat;
 
-// Corvax-Highlights
-public sealed class ChatUIController : UIController, IOnSystemChanged<CharacterInfoSystem>
+public sealed partial class ChatUIController : UIController
 {
     [Dependency] private readonly IClientAdminManager _admin = default!;
     [Dependency] private readonly IChatManager _manager = default!;
@@ -281,21 +275,7 @@ public sealed class ChatUIController : UIController, IOnSystemChanged<CharacterI
 
         _config.OnValueChanged(CCVars.ChatWindowOpacity, OnChatWindowOpacityChanged);
 
-        // Corvax-Highlights-Start
-        _config.OnValueChanged(CCCVars.ChatAutoFillHighlights, (value) => { _autoFillHighlightsEnabled = value; });
-        _autoFillHighlightsEnabled = _config.GetCVar(CCCVars.ChatAutoFillHighlights);
-
-        _config.OnValueChanged(CCCVars.ChatHighlightsColor, (value) => { _highlightsColor = value; });
-        _highlightsColor = _config.GetCVar(CCCVars.ChatHighlightsColor);
-
-        // Load highlights if any were saved.
-        string highlights = _config.GetCVar(CCCVars.ChatHighlights);
-
-        if (!string.IsNullOrEmpty(highlights))
-        {
-            UpdateHighlights(highlights);
-        }
-        // Corvax-Highlights-End
+        InitializeHighlights();
     }
 
     public void OnScreenLoad()
@@ -546,13 +526,7 @@ public sealed class ChatUIController : UIController, IOnSystemChanged<CharacterI
     {
         UpdateChannelPermissions();
 
-        // Corvax-Highlights-Start
-        if (_autoFillHighlightsEnabled)
-        {
-            _charInfoIsAttach = true;
-            _characterInfo.RequestCharacterInfo();
-        }
-        // Corvax-Highlights-End
+        UpdateAutoFillHighlights();
     }
 
     private void AddSpeechBubble(ChatMessage msg, SpeechBubble.SpeechType speechType)
@@ -984,13 +958,11 @@ public sealed class ChatUIController : UIController, IOnSystemChanged<CharacterI
                 msg.WrappedMessage = SharedChatSystem.InjectTagInsideTag(msg, "Name", "color", GetNameColor(SharedChatSystem.GetStringInsideTag(msg, "Name")));
         }
 
-        // Corvax-Highlights-Start
-        // Color any words choosen by the client.
+        // Color any words chosen by the client.
         foreach (var highlight in _highlights)
         {
             msg.WrappedMessage = SharedChatSystem.InjectTagAroundString(msg, highlight, "color", _highlightsColor);
         }
-        // Corvax-Highlights-End
 
         // Color any codewords for minds that have roles that use them
         if (_player.LocalUser != null && _mindSystem != null && _roleCodewordSystem != null)
