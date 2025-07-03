@@ -1,0 +1,11 @@
+- type: entity
+  parent: ClothingMaskBase
+  id: ClothingMaskGhost
+  name: ghost mask
+  description: Creepy white mask, I think or it was not used for fun.
+  components:
+  - type: Sprite
+    sprite: _SpyStation/Clothing/Mask/ghostmask.rsi
+  - type: Clothing
+    sprite: _SpyStation/Clothing/Mask/ghostmask.rsi
+  - type: IdentityBlocker
