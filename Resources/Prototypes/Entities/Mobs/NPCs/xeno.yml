@@ -89,6 +89,7 @@
       Dead:
         Base: dead
   - type: Puller
+    needsHands: false
   - type: Butcherable
     butcheringType: Spike
     spawned:
@@ -123,8 +124,6 @@
   - type: NightVision
     color: "#808080"
   - type: Fauna # Lavaland Change
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: praetorian
