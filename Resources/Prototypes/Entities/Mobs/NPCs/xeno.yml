@@ -162,8 +162,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: drone
@@ -201,8 +199,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: queen
@@ -242,8 +238,6 @@
   - type: Tag
     tags:
     - CannotSuicide
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: ravager
@@ -281,8 +275,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: runner
@@ -313,8 +305,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: rouny
@@ -379,8 +369,6 @@
         - MobMask
         layer:
         - MobLayer
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: space adder
