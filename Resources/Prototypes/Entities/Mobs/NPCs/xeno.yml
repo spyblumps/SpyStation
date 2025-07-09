@@ -60,7 +60,7 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      50: Dead
+      90: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
       25: 0.5
@@ -78,6 +78,7 @@
     damage:
       groups:
         Brute: 6
+        Structural: 10
   - type: DamageStateVisuals
     rotate: true
     states:
@@ -122,6 +123,8 @@
   - type: NightVision
     color: "#808080"
   - type: Fauna # Lavaland Change
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: praetorian
@@ -138,12 +141,16 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      100: Dead
+      200: Dead
   - type: Stamina
     critThreshold: 300
   - type: SlowOnDamage
     speedModifierThresholds:
-      50: 0.7
+      150: 0.7
+  - type: MeleeWeapon
+    damage:
+      groups:
+        Brute: 20
   - type: Fixtures
     fixtures:
       fix1:
@@ -155,6 +162,8 @@
         - MobMask
         layer:
         - MobLayer
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: drone
@@ -192,6 +201,8 @@
         - MobMask
         layer:
         - MobLayer
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: queen
@@ -211,12 +222,12 @@
       300: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
-      150: 0.7
+      200: 0.7
   - type: MovementSpeedModifier
   - type: MeleeWeapon
     damage:
      groups:
-       Brute: 12
+       Brute: 25
   - type: Fixtures
     fixtures:
       fix1:
@@ -231,6 +242,8 @@
   - type: Tag
     tags:
     - CannotSuicide
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: ravager
@@ -247,16 +260,16 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      100: Dead
+      120: Dead
   - type: MovementSpeedModifier
     baseSprintSpeed: 4
   - type: MeleeWeapon
     damage:
      groups:
-       Brute: 10
+       Brute: 15
   - type: SlowOnDamage
     speedModifierThresholds:
-      50: 0.7
+      80: 0.7
   - type: Fixtures
     fixtures:
       fix1:
@@ -268,6 +281,8 @@
         - MobMask
         layer:
         - MobLayer
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: runner
@@ -298,6 +313,8 @@
         - MobMask
         layer:
         - MobLayer
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: rouny
@@ -313,6 +330,8 @@
     spawned:
     - id: FoodMeatRouny
       amount: 3
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: spitter
@@ -329,10 +348,10 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      50: Dead
+      70: Dead
   - type: SlowOnDamage
     speedModifierThresholds:
-      25: 0.7
+      50: 0.7
   - type: HTN
     rootTask:
       task: SimpleRangedHostileCompound
@@ -360,6 +379,8 @@
         - MobMask
         layer:
         - MobLayer
+  - type: Puller
+    needsHands: false
 
 - type: entity
   name: space adder
