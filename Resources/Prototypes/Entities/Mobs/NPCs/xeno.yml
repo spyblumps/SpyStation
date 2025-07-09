@@ -78,7 +78,7 @@
     damage:
       groups:
         Brute: 6
-        Structural: 10
+        Structural: 10 # Corvax-Next
   - type: DamageStateVisuals
     rotate: true
     states:
@@ -146,10 +146,10 @@
   - type: SlowOnDamage
     speedModifierThresholds:
       150: 0.7 # Corvax-Next
-  - type: MeleeWeapon
+  - type: MeleeWeapon # Corvax-Next
     damage:
       groups:
-        Brute: 20 # Corvax-Next
+        Brute: 20
   - type: Fixtures
     fixtures:
       fix1:
@@ -319,8 +319,6 @@
     spawned:
     - id: FoodMeatRouny
       amount: 3
-  - type: Puller
-    needsHands: false
 
 - type: entity
   name: spitter
