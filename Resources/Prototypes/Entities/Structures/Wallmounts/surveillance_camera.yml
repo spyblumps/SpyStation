@@ -119,8 +119,8 @@
         - SurveillanceCameraMedical
         - SurveillanceCameraCommand
     - type: RCDDeconstructable
-      cost: 6
-      delay: 8
+      cost: 4
+      delay: 6
 
 - type: entity
   parent: SurveillanceCameraBase
