@@ -118,7 +118,7 @@
         - SurveillanceCameraGeneral
         - SurveillanceCameraMedical
         - SurveillanceCameraCommand
-    - type: RCDDeconstructable
+    - type: RCDDeconstructable # Corvax-Next-Camera-In-RCD
       cost: 4
       delay: 6
 
