@@ -183,6 +183,7 @@
   - type: Clothing
     sprite: Objects/Weapons/Guns/Battery/makeshift.rsi
 # Corvax-Next-MakeshiftLaser-Construction-start
+  - type: HitscanBatteryAmmoProvider
     proto: RedLightLaser
     fireCost: 100
   - type: Battery
