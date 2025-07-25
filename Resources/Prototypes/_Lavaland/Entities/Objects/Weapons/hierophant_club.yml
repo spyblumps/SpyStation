@@ -1,7 +1,7 @@
 - type: entity
   id: LavalandHierophantClub
   parent: BaseItem
-  name: hierophant
+  name: hierophant rod
   description: The meek, mysterious artifact sparkles with energy, completely at your disposal, as if a vassal to its suzerain.
   components:
   - type: Sprite
