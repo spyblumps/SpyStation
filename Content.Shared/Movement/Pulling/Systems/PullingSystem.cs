@@ -156,16 +156,12 @@ public sealed class PullingSystem : EntitySystem
 
         // Try find hand that is doing this pull.
         // and clear it.
-        foreach (var hand in component.Hands.Values)
+        foreach (var held in _handsSystem.EnumerateHeld((uid, component)))
         {
-            if (hand.HeldEntity == null
-                || !TryComp(hand.HeldEntity, out VirtualItemComponent? virtualItem)
-                || virtualItem.BlockingEntity != args.PulledUid)
-            {
+            if (!TryComp(held, out VirtualItemComponent? virtualItem) || virtualItem.BlockingEntity != args.PulledUid)
                 continue;
-            }
 
-            _handsSystem.TryDrop(args.PullerUid, hand, handsComp: component);
+            _handsSystem.TryDrop((args.PullerUid, component), held);
             break;
         }
     }
@@ -592,7 +588,7 @@ public sealed class PullingSystem : EntitySystem
             return false;
         }
 
-        if (!TryComp<PhysicsComponent>(pullableUid, out var physics)) // Goobstation
+        if (!TryComp<PhysicsComponent>(pullableUid, out var physics))
         {
             return false;
         }
@@ -887,7 +883,7 @@ public sealed class PullingSystem : EntitySystem
         if (!HasComp<CanChokeGrabComponent>(puller))
             return false;
         // Corvax-Next-GrabComponent-End
-        
+
         // It's blocking stage update, maybe better UX?
         if (puller.Comp.GrabStage == GrabStage.Suffocate)
         {

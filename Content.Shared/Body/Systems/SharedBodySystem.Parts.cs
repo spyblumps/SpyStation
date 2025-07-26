@@ -10,6 +10,7 @@ using Content.Shared.Movement.Components;
 using Content.Shared.Random;
 using Content.Shared._CorvaxNext.Targeting;
 using Robust.Shared.Containers;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -25,6 +26,7 @@ public partial class SharedBodySystem
     [Dependency] private readonly RandomHelperSystem _randomHelper = default!;
     [Dependency] private readonly InventorySystem _inventorySystem = default!;
 
+    private static readonly ProtoId<DamageTypePrototype> BloodlossDamageType = "Bloodloss";
     private void InitializeParts()
     {
         // TODO: This doesn't handle comp removal on child ents.
@@ -367,6 +369,9 @@ public partial class SharedBodySystem
         if (partEnt.Comp.PartType == BodyPartType.Torso)
         {
             RaiseLocalEvent(partEnt.Comp.Body.Value, new MoodRemoveEffectEvent("SurgeryNoTorso"));
+            // TODO BODY SYSTEM KILL : remove this when wounding and required parts are implemented properly
+            var damage = new DamageSpecifier(Prototypes.Index(BloodlossDamageType), 300);
+            Damageable.TryChangeDamage(bodyEnt, damage);
         }
     }
 

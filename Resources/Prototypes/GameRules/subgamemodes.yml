@@ -35,6 +35,9 @@
         - MedicalEquipment
         - Butchering
       - type: CanChokeGrab # Corvax-Next-Grab
+      - type: Thieving
+        stripTimeReduction: 2
+        stealthy: true
 #      components: # Corvax-MRP
 #      - type: Pacified
       mindRoles:
