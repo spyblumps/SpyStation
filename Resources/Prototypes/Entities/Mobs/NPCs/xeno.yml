@@ -76,9 +76,10 @@
      collection: AlienClaw
     animation: WeaponArcBite
     damage:
+      types:
+       Structural: 20 # Corvax-Next
       groups:
-        Brute: 6
-        Structural: 10 # Corvax-Next
+        Brute: 10
   - type: DamageStateVisuals
     rotate: true
     states:
