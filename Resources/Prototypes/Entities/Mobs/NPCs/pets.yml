@@ -807,6 +807,8 @@
       amount: 1
     - id: MaterialSmileExtract
       amount: 1
+  - type: Body # Corvax-Next-SmileCanEatNow
+    prototype: Animal
   - type: Damageable
     damageModifierSet: SlimePet
   - type: Bloodstream
