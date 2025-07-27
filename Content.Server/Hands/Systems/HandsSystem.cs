@@ -25,6 +25,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Content.Shared.Inventory.VirtualItem;
 
 namespace Content.Server.Hands.Systems
 {
@@ -114,7 +115,8 @@ namespace Content.Server.Hands.Systems
             args.Handled = true; // no shove/stun.
         }
 
-        private void HandleBodyPartAdded(Entity<HandsComponent> ent, ref BodyPartAddedEvent args)
+        // CorvaxNext: surgery
+        private void TryAddHand(Entity<HandsComponent> entity, Entity<BodyPartComponent> part, string slot)
         {
             if (part.Comp is null
                 || part.Comp.PartType != BodyPartType.Hand)
@@ -133,36 +135,48 @@ namespace Content.Server.Hands.Systems
             if (part.Comp.Enabled
                 && _bodySystem.TryGetParentBodyPart(part, out var _, out var parentPartComp)
                 && parentPartComp.Enabled)
-                AddHand(ent.AsNullable(), args.Slot, location);
+                AddHand(entity.Owner, slot, location);
         }
-
-        // start-_CorvaxNext: surgery
-        private void HandleBodyPartAdded(EntityUid uid, HandsComponent component, ref BodyPartAddedEvent args)
+        private void HandleBodyPartAdded(Entity<HandsComponent> ent, ref BodyPartAddedEvent args)
         {
-            TryAddHand(uid, component, args.Part, args.Slot);
-        }
-        // end-_CorvaxNext: surgery
+            if (args.Part.Comp.PartType != BodyPartType.Hand)
+                return;
 
-        private void HandleBodyPartRemoved(EntityUid uid, HandsComponent component, ref BodyPartRemovedEvent args)
+            // If this annoys you, which it should.
+            // Ping Smugleaf.
+            var location = args.Part.Comp.Symmetry switch
+            {
+                BodyPartSymmetry.None => HandLocation.Middle,
+                BodyPartSymmetry.Left => HandLocation.Left,
+                BodyPartSymmetry.Right => HandLocation.Right,
+                _ => throw new ArgumentOutOfRangeException(nameof(args.Part.Comp.Symmetry))
+            };
+
+
+            TryAddHand(ent, args.Part, args.Slot); // Corvax-Next-Surgery Replaced from AddHand()
+        }
+
+
+        private void HandleBodyPartRemoved(Entity<HandsComponent> entity, ref BodyPartRemovedEvent args)
         {
             if (args.Part.Comp is null
                 || args.Part.Comp.PartType != BodyPartType.Hand)
                 return;
-            RemoveHand(uid, args.Slot);
+            RemoveHand(entity.Owner, args.Slot);
         }
 
         // start-_CorvaxNext: surgery
-        private void HandleBodyPartEnabled(EntityUid uid, HandsComponent component, ref BodyPartEnabledEvent args) =>
-            TryAddHand(uid, component, args.Part, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
+        private void HandleBodyPartEnabled(Entity<HandsComponent> entity, ref BodyPartEnabledEvent args) =>
+            TryAddHand(entity, args.Part, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
 
-        private void HandleBodyPartDisabled(EntityUid uid, HandsComponent component, ref BodyPartDisabledEvent args)
+        private void HandleBodyPartDisabled(Entity<HandsComponent> entity, ref BodyPartDisabledEvent args)
         {
-            if (TerminatingOrDeleted(uid)
+            if (TerminatingOrDeleted(entity.Owner)
                 || args.Part.Comp is null
                 || args.Part.Comp.PartType != BodyPartType.Hand)
                 return;
 
-            RemoveHand(uid, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
+            RemoveHand(entity.Owner, SharedBodySystem.GetPartSlotContainerId(args.Part.Comp.ParentSlot?.Id ?? string.Empty));
         }
         // end-_CorvaxNext: surgery
 
@@ -205,10 +219,10 @@ namespace Content.Server.Hands.Systems
 
             if (TryComp<VirtualItemComponent>(throwEnt, out var virt))
             {
-                var userEv = new VirtualItemThrownEvent(virt.BlockingEntity, player, throwEnt, direction);
+                var userEv = new VirtualItemThrownEvent(virt.BlockingEntity, player, throwEnt.Value, direction);
                 RaiseLocalEvent(player, userEv);
 
-                var targEv = new VirtualItemThrownEvent(virt.BlockingEntity, player, throwEnt, direction);
+                var targEv = new VirtualItemThrownEvent(virt.BlockingEntity, player, throwEnt.Value, direction);
                 RaiseLocalEvent(virt.BlockingEntity, targEv);
             }
             // Goobstation end

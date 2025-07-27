@@ -113,10 +113,12 @@ public sealed class HeadsetSystem : SharedHeadsetSystem
             RaiseLocalEvent(parent, ref relayEvent);
         }
 
-        if (TryComp(parent, out ActorComponent? actor))
-            _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
-
         // Corvax-Next-HeadsetSound-Start
+        if (!TryComp(parent, out ActorComponent? actor))
+            return;
+
+        _netMan.ServerSendMessage(args.ChatMsg, actor.PlayerSession.Channel);
+
         if (uid == args.RadioSource)
             return;
 

@@ -51,6 +51,7 @@ using Robust.Shared.Utility;
 using Content.Shared.Damage.Systems;
 using Content.Shared.CombatMode;
 using Content.Shared.Effects;
+using Content.Shared.Cuffs;
 
 namespace Content.Shared.Movement.Pulling.Systems;
 
@@ -968,6 +969,9 @@ public sealed class PullingSystem : EntitySystem
         if (puller.Comp.GrabVirtualItemStageCount.TryGetValue(puller.Comp.GrabStage, out var count))
             newVirtualItemsCount += count;
 
+        if (!TryComp<HandsComponent>(puller, out var hands))
+            return false;
+
         if (virtualItemsCount == newVirtualItemsCount)
             return true;
         var delta = newVirtualItemsCount - virtualItemsCount;
@@ -977,7 +981,7 @@ public sealed class PullingSystem : EntitySystem
         {
             for (var i = 0; i < delta; i++)
             {
-                var emptyHand = _handsSystem.TryGetEmptyHand(puller, out _);
+                var emptyHand = _handsSystem.TryGetEmptyHand((puller, hands), out _);
                 if (!emptyHand)
                 {
                     if (_netManager.IsServer)

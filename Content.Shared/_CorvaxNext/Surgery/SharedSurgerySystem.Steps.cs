@@ -15,7 +15,6 @@ using Content.Shared.Item;
 using Content.Shared.Popups;
 using Robust.Shared.Prototypes;
 using System.Linq;
-using Content.Shared._CorvaxNext.Surgery;
 using Content.Shared._CorvaxNext.Mood;
 using Content.Shared._CorvaxNext.Surgery.Body.Events;
 using Content.Shared._CorvaxNext.Surgery.Body.Organs;
@@ -123,7 +122,7 @@ public abstract partial class SharedSurgerySystem
             }
         }
 
-        if (!HasComp<ForcedSleepingComponent>(args.Body))
+        if (!HasComp<ForcedSleepingStatusEffectComponent>(args.Body))
             RaiseLocalEvent(args.Body, new MoodEffectEvent("SurgeryPain"));
 
         if (!_inventory.TryGetSlotEntity(args.User, "gloves", out var _)

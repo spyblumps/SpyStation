@@ -218,7 +218,7 @@ public sealed class BodySystem : SharedBodySystem
         var bleeding = partEnt.Comp.SeverBleeding;
         if (partEnt.Comp.IsVital)
             bleeding *= 2f;
-        _bloodstream.TryModifyBleedAmount(bodyEnt, bleeding);
+        _bloodstream.TryModifyBleedAmount(bodyEnt.Owner, bleeding);
     }
     // end-_CorvaxNext: surgery
 }

@@ -1,8 +1,4 @@
 using Content.Shared.Body.Part;
-using Content.Server.Chemistry.Containers.EntitySystems;
-using Content.Server.Medical.Components;
-using Content.Server.Popups;
-using Content.Server.Stack;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Systems;
@@ -124,7 +120,7 @@ public sealed class HealingSystem : EntitySystem
         _audio.PlayPredicted(healing.HealingEndSound, target.Owner, args.User);
 
         // Logic to determine whether or not to repeat the healing action
-        args.Repeat = HasDamage(entity, healing) && !dontRepeat || IsPartDamaged(args.User, entity);
+        args.Repeat = HasDamage((args.Used.Value, healing), target) && !dontRepeat || IsPartDamaged(args.User, target);
         if (!args.Repeat && !dontRepeat)
             _popupSystem.PopupClient(Loc.GetString("medical-item-finished-using", ("item", args.Used)), target.Owner, args.User);
         args.Handled = true;
@@ -215,11 +211,11 @@ public sealed class HealingSystem : EntitySystem
             return false;
 
         var anythingToDo =
-            HasDamage((target, targetDamage), component) ||
+            HasDamage((healing.Owner, healing.Comp), (target.Owner, target.Comp)) ||
             IsPartDamaged(user, target) ||
-            component.ModifyBloodLevel > 0 // Special case if healing item can restore lost blood...
+            healing.Comp.ModifyBloodLevel > 0 // Special case if healing item can restore lost blood...
                 && TryComp<BloodstreamComponent>(target, out var bloodstream)
-                && _solutionContainerSystem.ResolveSolution(target, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution)
+                && _solutionContainerSystem.ResolveSolution(target.Owner, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution)
                 && bloodSolution.Volume < bloodSolution.MaxVolume; // ...and there is lost blood to restore.
 
         if (!anythingToDo)

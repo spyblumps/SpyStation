@@ -80,12 +80,12 @@ public sealed class DamageOnInteractSystem : EntitySystem
 
         TargetBodyPart? targetPart = null;
         var hands = CompOrNull<HandsComponent>(args.User);
-        if (hands is { ActiveHand: not null })
+        if (hands is { ActiveHandId: not null })
         {
-            targetPart = hands.ActiveHand.Location switch
+            targetPart = hands.Hands[hands.ActiveHandId].Location switch
             {
-                HandLocation.Left => TargetBodyPart.LeftArm,
-                HandLocation.Right => TargetBodyPart.RightArm,
+                HandLocation.Left => TargetBodyPart.LeftHand,
+                HandLocation.Right => TargetBodyPart.RightHand,
                 _ => null
             };
         }

@@ -95,7 +95,6 @@ namespace Content.IntegrationTests.Tests
             "NextPacked",
 			"NextChloris",
             "NextVoid",
-            "BattleRoyale",
             "Lavatest",
             // Corvax-Next-end
             "Dev",

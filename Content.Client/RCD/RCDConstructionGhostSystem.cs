@@ -11,6 +11,7 @@ using Robust.Shared.Input;
 using Robust.Shared.Input.Binding;
 
 using Robust.Shared.Prototypes;
+using Content.Shared.RCD.Systems;
 
 namespace Content.Client.RCD;
 
@@ -129,9 +130,9 @@ public sealed class RCDConstructionGhostSystem : EntitySystem
         // Create a new placer
         var newObjInfo = new PlacementInformation
         {
-            MobUid = heldEntity.Value,
+            MobUid = uid,
             PlacementOption = PlacementMode,
-            EntityType = prototype.Prototype,
+            EntityType = prototype,
             Range = (int) Math.Ceiling(SharedInteractionSystem.InteractionRange),
             IsTile = (component.CachedPrototype.Mode == RcdMode.ConstructTile),
             UseEditorContext = false,

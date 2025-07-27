@@ -249,7 +249,6 @@
     leech:
       groups:
         Brute: -10 # Lavaland Change: lower crusher healing
-  - type: MeleeWeapon
   - type: Tag
     tags:
       - Pickaxe
