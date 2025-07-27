@@ -13,7 +13,7 @@
     delay: 0.65
     replaceSound:
       path: /Audio/Effects/poster_broken.ogg
-    replacingEntity: PosterBroken
+    replacingEntity: PosterBrokenDespawnable
   - type: Destructible
     thresholds:
     - trigger: # Excess damage, don't spawn entities
