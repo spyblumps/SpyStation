@@ -1,13 +1,14 @@
 using Content.Server.Body.Systems;
 using Content.Shared.Alert;
 using Content.Shared.Atmos;
+using Content.Shared.Body.Components;
 using Content.Shared.Chemistry.Components;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Body.Components;
 
 [RegisterComponent, Access(typeof(LungSystem))]
-public sealed partial class LungComponent : Component
+public sealed partial class LungComponent : SharedLungComponent
 {
     [DataField]
     [Access(typeof(LungSystem), Other = AccessPermissions.ReadExecute)] // FIXME Friends
