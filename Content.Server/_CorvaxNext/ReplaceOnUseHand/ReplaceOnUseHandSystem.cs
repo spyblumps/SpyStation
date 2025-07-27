@@ -22,6 +22,9 @@ public sealed partial class ReplaceOnUseHandSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (entity.Comp.ReplacingEntity is null)
+            return;
+
         _doAfterSystem.TryStartDoAfter(new DoAfterArgs(EntityManager, args.User, entity.Comp.Delay, new ReplaceOnUseDoAfterEvent(), entity, target: entity)
         {
             BreakOnMove = true

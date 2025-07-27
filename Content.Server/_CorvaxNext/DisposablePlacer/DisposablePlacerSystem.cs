@@ -39,11 +39,17 @@ public sealed partial class DisposablePlacerSystem : EntitySystem
 
     public void OnMapInit(Entity<DisposablePlacerComponent> entity, ref ComponentInit args)
     {
+        if (entity.Comp.SelectablePrototypes.Count == 0)
+            return;
+
         entity.Comp.Prototype = entity.Comp.SelectablePrototypes[0];
     }
 
     private void OnAfterInteract(Entity<DisposablePlacerComponent> entity, ref AfterInteractEvent args)
     {
+        if (entity.Comp.Prototype is null)
+            return;
+
         if (args.Target == null || !args.CanReach || entity.Comp.IsPlacing)
             return;
 
@@ -88,6 +94,9 @@ public sealed partial class DisposablePlacerSystem : EntitySystem
             ClearPlacingEffects(entity);
             return;
         }
+
+        if (entity.Comp.Prototype is null)
+            return;
 
         if (args.Args.Target is null)
             return;

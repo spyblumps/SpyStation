@@ -12,7 +12,7 @@ public sealed partial class ReplaceOnUseHandComponent : Component
     public float Delay = 1f;
 
     [DataField(required: true)]
-    public EntProtoId ReplacingEntity;
+    public EntProtoId? ReplacingEntity;
 
     [DataField]
     public SoundPathSpecifier? ReplaceSound;
