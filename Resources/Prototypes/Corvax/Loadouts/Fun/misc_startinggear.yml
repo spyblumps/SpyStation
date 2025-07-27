@@ -34,7 +34,7 @@
   storage:
     back:
     - MedkitCombatFilled
-  inhand: 
+  inhand:
     - Scalpel
 
 - type: startingGear
