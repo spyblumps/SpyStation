@@ -19,10 +19,7 @@ public sealed partial class TTSSystem
     private static SoundSpecifier? _startSound = new SoundPathSpecifier("/Audio/_CorvaxNext/TTS/comms_start.ogg");
 
     private static TimeSpan _startSoundLength;
-
-
     private static byte[]? _currentData;
-
     private static TimeSpan _startedAt;
 
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -36,7 +33,7 @@ public sealed partial class TTSSystem
 
         if (_isPlayingIntro)
         {
-            if (_timing.CurTime > _startedAt)
+            if (_timing.CurTime > _startedAt + _startSoundLength - TimeSpan.FromSeconds(3.5))
             {
                 _isPlayingIntro = false;
 
@@ -74,6 +71,9 @@ public sealed partial class TTSSystem
 
         var soundSpecifier = new SoundPathSpecifier(Prefix / filePath);
 
+        var noiseParams = AudioParams.Default
+            .WithLoop(true);
+
         var mainSound = _audio.PlayGlobal(soundSpecifier, Filter.Local(), true, audioParams);
 
         _endTime = _audio.GetAudioLength(_audio.ResolveSound(soundSpecifier)) + _timing.CurTime + TimeSpan.FromSeconds(0.5);
@@ -94,7 +94,7 @@ public sealed partial class TTSSystem
         _currentData = args.Data;
 
         _audio.PlayGlobal(_startSound, Filter.Local(), true, AudioParams.Default.WithVolume(AdjustVolume(false) + 3));
-        _startedAt = _timing.CurTime + _startSoundLength - TimeSpan.FromSeconds(3.5);
+        _startedAt = _timing.CurTime;
         _isPlaying = true;
         _isPlayingIntro = true;
     }

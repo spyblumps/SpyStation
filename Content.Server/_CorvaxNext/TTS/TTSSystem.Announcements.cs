@@ -71,7 +71,7 @@ public sealed partial class TTSSystem
 
     async private void SendGlobalAnnouncement(string text, string voice)
     {
-        SendTTS(Filter.Broadcast(), text, voice, true);
+        SendAnnouncementTTS(Filter.Broadcast(), text, voice);
     }
 
     async private void SendStationAnnouncement(EntityUid consoleUid, string text, string voice)
@@ -84,19 +84,13 @@ public sealed partial class TTSSystem
         if (!TryComp<StationDataComponent>(station, out var stationDataComp))
             return;
 
-
-        SendTTS(_stationSystem.GetInStation(stationDataComp), text, voice, false);
+        SendAnnouncementTTS(_stationSystem.GetInStation(stationDataComp), text, voice, ChatSystem.CentComAnnouncementSound);
     }
-    async private void SendTTS(Filter filter, string text, string voice, bool isGlobal)
+    async private void SendAnnouncementTTS(Filter filter, string text, string voice, string announcementSound = ChatSystem.DefaultAnnouncementSound)
     {
         _filterToSend = filter;
         _isPlaying = true;
-        _sendTTSAt = _timing.CurTime;
-
-        if (isGlobal)
-            _sendTTSAt += _audio.GetAudioLength(_audio.ResolveSound(new SoundPathSpecifier(ChatSystem.CentComAnnouncementSound)));
-        else
-            _sendTTSAt += _audio.GetAudioLength(_audio.ResolveSound(new SoundPathSpecifier(ChatSystem.DefaultAnnouncementSound)));
+        _sendTTSAt = _timing.CurTime + _audio.GetAudioLength(_audio.ResolveSound(new SoundPathSpecifier(announcementSound))) + TimeSpan.FromSeconds(-1.5);
 
         _soundDataToSend = await GenerateTTS(text, voice);
     }
@@ -114,6 +108,6 @@ public sealed partial class TTSSystem
         if (!_prototypeManager.TryIndex<TTSVoicePrototype>(voice, out var protoVoice))
             return;
 
-        SendTTS(Filter.Broadcast(), text, protoVoice.Speaker, true);
+        SendAnnouncementTTS(Filter.Broadcast(), text, protoVoice.Speaker);
     }
 }
